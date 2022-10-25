@@ -29,6 +29,7 @@ def allowed_file(filename):
 def upload_img():
 
     if 'image' not in request.files:
+        print(request.files)
         print('No image')
         return redirect(request.url)
         
@@ -49,11 +50,11 @@ def upload_img():
         txts = [line[1][0] for line in result]
         fulltxt = ' '.join(txts)
 
-        # context = jsonify(img_path=img_path, fulltxt=fulltxt)
-        # print(context)
+        context = jsonify(img_path=img_path, fulltxt=fulltxt)
+        print(context.data)
 
-        context = {'img_path': img_path, 'fulltxt': fulltxt}
-        print(context)
+        # context = {'img_path': img_path, 'fulltxt': fulltxt}
+        # print(context)
 
         return context
 
