@@ -53,9 +53,6 @@ def upload_img():
         context = jsonify(img_path=img_path, fulltxt=fulltxt)
         print(context.data)
 
-        # context = {'img_path': img_path, 'fulltxt': fulltxt}
-        # print(context)
-
         return context
 
 if __name__ == "__main__":
