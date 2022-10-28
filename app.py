@@ -1,11 +1,8 @@
-from base64 import b64encode
 from dotenv import load_dotenv
-from flask import Flask, render_template, flash, request, url_for, redirect, jsonify
-from io import BytesIO
-from paddleocr import PaddleOCR, draw_ocr
+from flask import Flask, request, redirect, jsonify
+from paddleocr import PaddleOCR
 from PIL import Image
 from werkzeug.utils import secure_filename
-import urllib.request
 import os
 
 load_dotenv()
