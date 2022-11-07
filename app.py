@@ -2,16 +2,14 @@ from dotenv import load_dotenv
 from flask import Flask, request, redirect, jsonify
 from paddleocr import PaddleOCR
 from PIL import Image
+from tempfile import TemporaryDirectory
 from werkzeug.utils import secure_filename
 import os
 
 load_dotenv()
 
-UPLOAD_FOLDER = 'static/uploads/'
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -24,6 +22,9 @@ def allowed_file(filename):
 
 @app.route("/", methods=['POST'])
 def upload_img():
+    global UPLOAD_FOLDER
+    UPLOAD_FOLDER = TemporaryDirectory()
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     if 'image' not in request.files:
         print(request.files)
@@ -37,10 +38,8 @@ def upload_img():
 
     if image and allowed_file(image.filename):
         filename = secure_filename(image.filename)
-        img_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        img_path = os.path.join(app.config['UPLOAD_FOLDER'].name, filename)
         image.save(img_path)
-
-        image_pil = Image.open(image)
 
         # Kode OCR disini
         result = ocr.ocr(img_path)
@@ -50,8 +49,13 @@ def upload_img():
         context = jsonify(img_path=img_path, fulltxt=fulltxt)
         print(context.data)
 
+        UPLOAD_FOLDER.cleanup()
+        app.config['UPLOAD_FOLDER'].cleanup()
+
         return context
 
+    UPLOAD_FOLDER.cleanup()
+    app.config['UPLOAD_FOLDER'].cleanup()
+
 if __name__ == "__main__":
-    print("APP RUNNING...")
     app.run()
