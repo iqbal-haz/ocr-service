@@ -8,8 +8,11 @@ import os
 
 load_dotenv()
 
+UPLOAD_FOLDER = TemporaryDirectory()
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -22,10 +25,6 @@ def allowed_file(filename):
 
 @app.route("/", methods=['POST'])
 def upload_img():
-    global UPLOAD_FOLDER
-    UPLOAD_FOLDER = TemporaryDirectory()
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
     if 'image' not in request.files:
         print(request.files)
         print('No image')
@@ -49,13 +48,9 @@ def upload_img():
         context = jsonify(img_path=img_path, fulltxt=fulltxt)
         print(context.data)
 
-        UPLOAD_FOLDER.cleanup()
-        app.config['UPLOAD_FOLDER'].cleanup()
-
         return context
-
-    UPLOAD_FOLDER.cleanup()
-    app.config['UPLOAD_FOLDER'].cleanup()
 
 if __name__ == "__main__":
     app.run()
+    UPLOAD_FOLDER.cleanup()
+    app.config['UPLOAD_FOLDER'].cleanup()
