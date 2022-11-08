@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from flask import Flask, request, redirect, jsonify
 from paddleocr import PaddleOCR
-from PIL import Image
 from tempfile import TemporaryDirectory
 from werkzeug.utils import secure_filename
 import os
@@ -9,9 +8,12 @@ import os
 load_dotenv()
 
 UPLOAD_FOLDER = TemporaryDirectory()
+SECRET_KEY = os.popen("head -c 20 /dev/random | base64").read()
+print(SECRET_KEY)
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = SECRET_KEY
+print(app.config['SECRET_KEY'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
