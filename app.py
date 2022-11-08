@@ -1,11 +1,8 @@
-from dotenv import load_dotenv
 from flask import Flask, request, redirect, jsonify
 from paddleocr import PaddleOCR
 from tempfile import TemporaryDirectory
 from werkzeug.utils import secure_filename
 import os
-
-load_dotenv()
 
 UPLOAD_FOLDER = TemporaryDirectory()
 SECRET_KEY = os.popen("head -c 20 /dev/random | base64").read()
