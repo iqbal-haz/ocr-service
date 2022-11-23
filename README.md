@@ -37,8 +37,8 @@ python3 setup.py py2app
 > **Note**: you dont need to activate virtual environment if py2app already installed as global package in your system.
 
 To run the executable, you can do __one__ of the following steps: <br>
-1. go to dist directory and double click on the asr-app, or 
+1. go to dist directory and double click on the ocr-app, or 
 2. run the command below on terminal <br>
 `
-./dist/asr-app.app/Contents/MacOS/asr-app
+./dist/ocr-app.app/Contents/MacOS/ocr-app
 `
