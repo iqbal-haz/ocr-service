@@ -26,3 +26,19 @@ MacOS / Linux <br>
 curl --location --request POST 'http://127.0.0.1:5000/' \
 --form 'image=@"/path/to/image/file"
 ```
+
+## Creating Executable
+
+This application uses py2app module to create .app executable. (equivalent with py2exe for windows) <br>
+To create executable, you need to first __activate the virtual environment__, and then run this command on terminal
+```
+python3 setup.py py2app
+```
+> **Note**: you dont need to activate virtual environment if py2app already installed as global package in your system.
+
+To run the executable, you can do __one__ of the following steps: <br>
+1. go to dist directory and double click on the asr-app, or 
+2. run the command below on terminal <br>
+`
+./dist/asr-app.app/Contents/MacOS/asr-app
+`
